@@ -19,7 +19,7 @@ public class DrawerService {
 		drawer.getMotorPlus().high();
 		
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			stopInError(drawer);
 			throw e;
