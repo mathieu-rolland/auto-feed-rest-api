@@ -1,21 +1,23 @@
 package com.perso.feed.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.perso.feed.config.BoxContextSingleton;
+import com.perso.feed.config.BoxContext;
 import com.perso.feed.model.Drawer;
 import com.perso.feed.model.DrawerStateEnum;
 
 @Service
 public class DrawerService {
 
+	@Autowired
+	private BoxContext boxContext;
+	
 	public Drawer openDrawer( Drawer drawer ) throws InterruptedException {
-		
-		BoxContextSingleton boxSingleton = BoxContextSingleton.getInstance();
 		
 		drawer.setState( DrawerStateEnum.OPENING );
 		
-		boxSingleton.getLedPin().high();
+		boxContext.getLedPin().high();
 		drawer.getMotorPlus().high();
 		
 		try {
@@ -25,7 +27,7 @@ public class DrawerService {
 			throw e;
 		}
 		
-		boxSingleton.getLedPin().low();
+		boxContext.getLedPin().low();
 		drawer.getMotorPlus().low();
 		
 		drawer.setState( DrawerStateEnum.OPEN );
@@ -36,11 +38,9 @@ public class DrawerService {
 
 	public Drawer closeDrawer( Drawer drawer ) throws InterruptedException {
 		
-		BoxContextSingleton boxSingleton = BoxContextSingleton.getInstance();
-		
 		drawer.setState( DrawerStateEnum.CLOSING );
 		
-		boxSingleton.getLedPin().high();
+		boxContext.getLedPin().high();
 		drawer.getMotorLess().high();
 		
 		try {
@@ -50,7 +50,7 @@ public class DrawerService {
 			throw e;
 		}
 		
-		boxSingleton.getLedPin().low();
+		boxContext.getLedPin().low();
 		drawer.getMotorLess().low();
 		
 		drawer.setState( DrawerStateEnum.CLOSED );
@@ -60,8 +60,7 @@ public class DrawerService {
 	}
 	
 	private void stopInError( Drawer drawer ) {
-		BoxContextSingleton boxSingleton = BoxContextSingleton.getInstance();
-		boxSingleton.getLedPin().low();
+		boxContext.getLedPin().low();
 		drawer.getMotorPlus().low();
 	}
 	
