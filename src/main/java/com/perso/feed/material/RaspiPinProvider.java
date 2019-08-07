@@ -17,6 +17,11 @@ public class RaspiPinProvider implements IPinProvider {
 	}
 
 	@Override
+	public Pin getPin02() {
+		return RaspiPin.GPIO_02;
+	}
+	
+	@Override
 	public Pin getPin20() {
 		return RaspiPin.GPIO_20;
 	}

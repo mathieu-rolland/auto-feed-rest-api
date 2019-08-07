@@ -9,12 +9,17 @@ public class PinProviderEmulator implements IPinProvider {
 	public Pin getPin00() {
 		return new PinEmulator( "00" );
 	}
-
+	
 	@Override
 	public Pin getPin01() {
 		return new PinEmulator( "01" );
 	}
 
+	@Override
+	public Pin getPin02() {
+		return new PinEmulator( "02" );
+	}
+	
 	@Override
 	public Pin getPin20() {
 		return new PinEmulator( "20" );

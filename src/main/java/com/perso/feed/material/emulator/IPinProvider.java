@@ -6,6 +6,7 @@ public interface IPinProvider {
 
 	public Pin getPin00();
 	public Pin getPin01();
+	public Pin getPin02();
 	
 	public Pin getPin20();
 	public Pin getPin21();
@@ -13,6 +14,5 @@ public interface IPinProvider {
 	public Pin getPin23();
 	public Pin getPin24();
 	public Pin getPin25();
-	
 	
 }

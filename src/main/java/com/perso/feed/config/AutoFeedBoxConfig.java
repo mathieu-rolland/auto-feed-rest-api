@@ -14,8 +14,6 @@ import com.perso.feed.material.emulator.impl.PinProviderEmulator;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Configuration
 public class AutoFeedBoxConfig {
 
