@@ -13,24 +13,24 @@ import lombok.extern.slf4j.Slf4j;
 public class BoxService {
 
 	@Autowired
-	private BoxContext boxSingleton;
+	private BoxContext boxContext;
 	
 	@Autowired
 	private DrawerService drawerService;
 	
 	public Drawer openDrawer( int number ) throws InterruptedException {
 		if( number == 1 ) {
-			return drawerService.openDrawer( boxSingleton.getDrawer1() );
+			return drawerService.openingDrawer( boxContext.getDrawer1() );
 		}else {
 			log.warn("The drawer number 2 is not implemented yet.");
 			return null;
 		}
-			
+		
 	}
 	
 	public Drawer closeDrawer( int number ) throws InterruptedException {
 		if( number == 1 ) {
-			return drawerService.closeDrawer( boxSingleton.getDrawer1() );
+			return drawerService.closingDrawer( boxContext.getDrawer1() );
 		}else {
 			log.warn("The drawer number 2 is not implemented yet.");
 			return null;

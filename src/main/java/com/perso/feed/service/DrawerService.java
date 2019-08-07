@@ -13,7 +13,7 @@ public class DrawerService {
 	@Autowired
 	private BoxContext boxContext;
 	
-	public Drawer openDrawer( Drawer drawer ) throws InterruptedException {
+	public Drawer openingDrawer( Drawer drawer ) throws InterruptedException {
 		
 		drawer.setState( DrawerStateEnum.OPENING );
 		
@@ -27,16 +27,11 @@ public class DrawerService {
 			throw e;
 		}
 		
-		boxContext.getLedPin().low();
-		drawer.getMotorPlus().low();
-		
-		drawer.setState( DrawerStateEnum.OPEN );
-		
 		return drawer;
 		
 	}
 
-	public Drawer closeDrawer( Drawer drawer ) throws InterruptedException {
+	public Drawer closingDrawer( Drawer drawer ) throws InterruptedException {
 		
 		drawer.setState( DrawerStateEnum.CLOSING );
 		
@@ -49,11 +44,6 @@ public class DrawerService {
 			stopInError(drawer);
 			throw e;
 		}
-		
-		boxContext.getLedPin().low();
-		drawer.getMotorLess().low();
-		
-		drawer.setState( DrawerStateEnum.CLOSED );
 		
 		return drawer;
 		
