@@ -1,0 +1,4 @@
+
+auto-feed:
+  camera:
+    cmd: sleep 100000

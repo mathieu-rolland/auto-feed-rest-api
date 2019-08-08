@@ -1,0 +1,4 @@
+
+auto-feed:
+  camera:
+    cmd: /product/auto-feed/mjpg-streamer-experimental/mjpg_streamer -o "output_http.so -w /product/auto-feed/mjpg-streamer-experimental/www -p 8090" -i "input_raspicam.so"

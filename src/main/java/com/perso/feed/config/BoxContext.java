@@ -52,7 +52,7 @@ public class BoxContext {
 		course1MoteurClosed.addListener( closingListener );
 		course1MoteurOpened.addListener( openingListener );
 		
-		camera = new Camera( CameraStateEnum.STOP );
+		camera = new Camera( CameraStateEnum.STOPPED , null );
 		
 	}
 	

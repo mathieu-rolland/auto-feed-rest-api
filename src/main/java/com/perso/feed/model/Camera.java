@@ -11,4 +11,6 @@ public class Camera {
 
 	private CameraStateEnum state;
 	
+	private Process process;
+	
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum CameraStateEnum {
 
-	START("started") , STOP("stoped");
+	RUNNING("running") , STOPPED("stopped");
 	
 	private String name;
 	

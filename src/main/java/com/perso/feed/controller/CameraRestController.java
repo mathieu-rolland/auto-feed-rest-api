@@ -8,18 +8,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.perso.feed.model.dto.BoxStateDTO;
 import com.perso.feed.service.BoxService;
+import com.perso.feed.service.CameraService;
 
 @RestController
-@RequestMapping("/material/security")
-public class BoxMaterialSecurityController {
+@RequestMapping("/camera")
+public class CameraRestController {
 
+	@Autowired
+	private CameraService cameraService;
+	
 	@Autowired
 	private BoxService boxService;
 	
-	@RequestMapping("/stop/force")
-	public ResponseEntity<BoxStateDTO> forceToStop() 
-	{
-		boxService.stopAll();
+	@RequestMapping("/start")
+	public ResponseEntity<BoxStateDTO> startCamera(){
+		cameraService.startStreaming();
+		return new ResponseEntity<BoxStateDTO>( boxService.generateState() , HttpStatus.OK );
+	}
+	
+	@RequestMapping("/stop")
+	public ResponseEntity<BoxStateDTO> stopCamera(){
+		cameraService.stopStreaming();
 		return new ResponseEntity<BoxStateDTO>( boxService.generateState() , HttpStatus.OK );
 	}
 	

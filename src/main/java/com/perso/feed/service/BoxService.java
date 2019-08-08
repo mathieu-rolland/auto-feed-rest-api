@@ -7,6 +7,7 @@ import com.perso.feed.config.BoxContext;
 import com.perso.feed.converter.dto.impl.BoxStateDTOConverter;
 import com.perso.feed.model.BoxState;
 import com.perso.feed.model.Drawer;
+import com.perso.feed.model.DrawerStateEnum;
 import com.perso.feed.model.dto.BoxStateDTO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,9 @@ public class BoxService {
 	
 	@Autowired
 	private BoxStateDTOConverter boxStateDtoConverter;
+	
+	@Autowired
+	private CameraService cameraService;
 	
 	public Drawer openDrawer( int number ) throws InterruptedException {
 		if( number == 1 ) {
@@ -45,12 +49,34 @@ public class BoxService {
 	}
 
 	public void stopAll() {
-		
+
 		boxContext.getDrawer1().getMotorLess().low();
 		boxContext.getDrawer1().getMotorPlus().low();
 		boxContext.getDrawer2().getMotorLess().low();
 		boxContext.getDrawer2().getMotorPlus().low();
+
+		boxContext.getLedPin().low();
 		
+		cameraService.forceToKill();
+		
+		setDrawStateAfterForceStop( boxContext.getDrawer1() );
+		setDrawStateAfterForceStop( boxContext.getDrawer2() );
+		
+	}
+	
+	private void setDrawStateAfterForceStop( Drawer drawer ) {
+		switch( drawer.getState() ) {
+			case CLOSING:
+				drawer.setState( DrawerStateEnum.CLOSED );
+				break;
+			case OPENING:
+				drawer.setState( DrawerStateEnum.OPEN );
+				break;
+			default:
+				log.info("L'état du moteur n'a pas été forcé.");
+				return;
+		}
+		log.info("L'état du moteur {}  est forcé à {} ", drawer.getName() , drawer.getState() );
 	}
 	
 	public BoxStateDTO generateState() {
