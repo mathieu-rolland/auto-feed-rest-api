@@ -20,13 +20,6 @@ public class DrawerService {
 		boxContext.getLedPin().high();
 		drawer.getMotorPlus().high();
 		
-		try {
-			Thread.sleep(10000);
-		} catch (InterruptedException e) {
-			stopInError(drawer);
-			throw e;
-		}
-		
 		return drawer;
 		
 	}
@@ -38,18 +31,11 @@ public class DrawerService {
 		boxContext.getLedPin().high();
 		drawer.getMotorLess().high();
 		
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			stopInError(drawer);
-			throw e;
-		}
-		
 		return drawer;
 		
 	}
 	
-	private void stopInError( Drawer drawer ) {
+	public void stopInError( Drawer drawer ) {
 		boxContext.getLedPin().low();
 		drawer.getMotorPlus().low();
 	}

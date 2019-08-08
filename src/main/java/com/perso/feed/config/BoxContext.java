@@ -2,6 +2,8 @@ package com.perso.feed.config;
 
 import com.perso.feed.material.emulator.IPinProvider;
 import com.perso.feed.material.listener.GpioPinListenerDigitalEventListener;
+import com.perso.feed.model.Camera;
+import com.perso.feed.model.CameraStateEnum;
 import com.perso.feed.model.Drawer;
 import com.perso.feed.model.DrawerStateEnum;
 import com.pi4j.io.gpio.GpioController;
@@ -19,6 +21,11 @@ public class BoxContext {
 	
 	private GpioPinDigitalOutput ledPin;
 	
+	private GpioPinListenerDigitalEventListener closingListener;
+	private GpioPinListenerDigitalEventListener openingListener;
+	
+	private Camera camera;
+	
 	public void setupGpio( GpioController gpio , IPinProvider pinProvider ) {
 		
 		
@@ -33,11 +40,19 @@ public class BoxContext {
 		
 		drawer1 = new Drawer( "Drawer1" , DrawerStateEnum.CLOSED, motor1Pin1, motor1Pin2);
 		
+		//TODO : implementer la gestion du 2eme moteur.
+		drawer2 = new Drawer( "Drawer2" , DrawerStateEnum.CLOSED , null , null );
+		
 		GpioPinDigitalInput course1MoteurClosed = gpio.provisionDigitalInputPin( pinProvider.getPin01() , "CfC1MoteurClosed"  );
 		GpioPinDigitalInput course1MoteurOpened = gpio.provisionDigitalInputPin( pinProvider.getPin02() , "CfC1MoteurOpened"  );
 		
-		course1MoteurClosed.addListener( new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.CLOSING , DrawerStateEnum.CLOSED ) );
-		course1MoteurOpened.addListener( new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.OPENING , DrawerStateEnum.OPEN ) );
+		closingListener = new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.CLOSING , DrawerStateEnum.CLOSED );
+		openingListener = new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.OPENING , DrawerStateEnum.OPEN );
+		
+		course1MoteurClosed.addListener( closingListener );
+		course1MoteurOpened.addListener( openingListener );
+		
+		camera = new Camera( CameraStateEnum.STOP );
 		
 	}
 	

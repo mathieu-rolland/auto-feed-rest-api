@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.perso.feed.config.BoxContext;
+import com.perso.feed.converter.dto.impl.BoxStateDTOConverter;
+import com.perso.feed.model.BoxState;
 import com.perso.feed.model.Drawer;
+import com.perso.feed.model.dto.BoxStateDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +20,9 @@ public class BoxService {
 	
 	@Autowired
 	private DrawerService drawerService;
+	
+	@Autowired
+	private BoxStateDTOConverter boxStateDtoConverter;
 	
 	public Drawer openDrawer( int number ) throws InterruptedException {
 		if( number == 1 ) {
@@ -36,6 +42,24 @@ public class BoxService {
 			return null;
 		}
 			
+	}
+
+	public void stopAll() {
+		
+		boxContext.getDrawer1().getMotorLess().low();
+		boxContext.getDrawer1().getMotorPlus().low();
+		boxContext.getDrawer2().getMotorLess().low();
+		boxContext.getDrawer2().getMotorPlus().low();
+		
+	}
+	
+	public BoxStateDTO generateState() {
+		BoxState state = new BoxState();
+		state.setCamera( boxContext.getCamera() );
+		state.setDrawer1( boxContext.getDrawer1() );
+		state.setDrawer2( boxContext.getDrawer2() );
+		state.setLedState( boxContext.getLedPin() );
+		return boxStateDtoConverter.generateDTO( state );
 	}
 	
 }
