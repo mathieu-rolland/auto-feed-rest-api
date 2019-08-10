@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.perso.feed.config.BoxContext;
 import com.perso.feed.model.CameraStateEnum;
+import com.perso.feed.model.ErrorCodeEnum;
+import com.perso.feed.model.ErrorDescription;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,30 +32,40 @@ public class CameraService {
 	@Autowired
 	private BoxContext boxContext;
 	
+	@Autowired
+	private ErrorService errorService;
+	
 	public boolean cameraIsRunning() {
 		return boxContext.getCamera().getProcess() != null && boxContext.getCamera().getProcess().isAlive();
 	}
 	
-	public void startStreaming() {
-		log.info("Start camera");
-		try {			
-			log.info("Running the commande : {} " , cmd);
-			Process p = Runtime.getRuntime().exec( cmd );
-			boxContext.getCamera().setProcess( p );
-		} catch (IOException e) {
-			e.printStackTrace();
+	public ErrorDescription startStreaming() {
+		if( !cameraIsRunning() ){
+			log.info("Start camera");
+			try {			
+				log.info("Running the commande : {} " , cmd);
+				Process p = Runtime.getRuntime().exec( cmd );
+				boxContext.getCamera().setProcess( p );
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			boxContext.getCamera().setState( CameraStateEnum.RUNNING );
+			return null;
+		}else {
+			return errorService.generateReturnDescription( ErrorCodeEnum.CAMERA_ALREADY_STARTED );
 		}
-		boxContext.getCamera().setState( CameraStateEnum.RUNNING );
 	}
 
-	public void stopStreaming() {
+	public ErrorDescription stopStreaming() {
 		Process cameraProcess = boxContext.getCamera().getProcess();
 		if( cameraIsRunning() ) {
 			cameraProcess.destroy();
 			boxContext.getCamera().setState( CameraStateEnum.STOPPED );
 			log.info("Stop the camera streaming");
+			return null;
 		}else {
 			log.info("The camera is not running");
+			return errorService.generateReturnDescription( ErrorCodeEnum.CAMERA_ALREADY_CLOSED );
 		}
 	}
 	

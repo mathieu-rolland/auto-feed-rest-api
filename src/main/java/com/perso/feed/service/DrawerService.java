@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.perso.feed.config.BoxContext;
 import com.perso.feed.model.Drawer;
 import com.perso.feed.model.DrawerStateEnum;
+import com.perso.feed.model.ErrorCodeEnum;
+import com.perso.feed.model.ErrorDescription;
 
 @Service
 public class DrawerService {
@@ -13,31 +15,50 @@ public class DrawerService {
 	@Autowired
 	private BoxContext boxContext;
 	
-	public Drawer openingDrawer( Drawer drawer ) throws InterruptedException {
+	@Autowired
+	private ErrorService errorService;
+	
+	public ErrorDescription openingDrawer( Drawer drawer ) throws InterruptedException {
 		
-		drawer.setState( DrawerStateEnum.OPENING );
+		if( !isOpenOrOpenning(drawer) ) { 
 		
-		boxContext.getLedPin().high();
-		drawer.getMotorPlus().high();
-		
-		return drawer;
+			drawer.setState( DrawerStateEnum.OPENING );
+			
+			boxContext.getLedPin().high();
+			drawer.getMotorPlus().high();
+			
+			return null;
+		}else {
+			return errorService.generateReturnDescription( ErrorCodeEnum.ALREADY_OPEN );
+		}
 		
 	}
 
-	public Drawer closingDrawer( Drawer drawer ) throws InterruptedException {
+	public ErrorDescription closingDrawer( Drawer drawer ) throws InterruptedException {
 		
-		drawer.setState( DrawerStateEnum.CLOSING );
+		if( isOpenOrOpenning( drawer ) ) {
 		
-		boxContext.getLedPin().high();
-		drawer.getMotorLess().high();
-		
-		return drawer;
+			drawer.setState( DrawerStateEnum.CLOSING );
+			
+			boxContext.getLedPin().high();
+			drawer.getMotorLess().high();
+			
+			return null;
+		}else {
+			return errorService.generateReturnDescription( ErrorCodeEnum.ALREADY_CLOSED );
+		}
 		
 	}
 	
 	public void stopInError( Drawer drawer ) {
 		boxContext.getLedPin().low();
 		drawer.getMotorPlus().low();
+	}
+	
+	public boolean isOpenOrOpenning( Drawer drawer ) {
+		return DrawerStateEnum.OPEN.equals( drawer.getState() ) 
+				|| DrawerStateEnum.OPENING.equals( drawer.getState() );
+				
 	}
 	
 }

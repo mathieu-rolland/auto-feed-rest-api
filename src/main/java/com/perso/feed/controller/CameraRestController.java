@@ -6,7 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.perso.feed.model.dto.BoxStateDTO;
+import com.perso.feed.model.ErrorDescription;
+import com.perso.feed.model.dto.BoxResponseDTO;
 import com.perso.feed.service.BoxService;
 import com.perso.feed.service.CameraService;
 
@@ -21,15 +22,15 @@ public class CameraRestController {
 	private BoxService boxService;
 	
 	@RequestMapping("/start")
-	public ResponseEntity<BoxStateDTO> startCamera(){
-		cameraService.startStreaming();
-		return new ResponseEntity<BoxStateDTO>( boxService.generateState() , HttpStatus.OK );
+	public ResponseEntity<BoxResponseDTO> startCamera(){
+		ErrorDescription error = cameraService.startStreaming();
+		return new ResponseEntity<BoxResponseDTO>( boxService.generateState( error ) , HttpStatus.OK );
 	}
 	
 	@RequestMapping("/stop")
-	public ResponseEntity<BoxStateDTO> stopCamera(){
-		cameraService.stopStreaming();
-		return new ResponseEntity<BoxStateDTO>( boxService.generateState() , HttpStatus.OK );
+	public ResponseEntity<BoxResponseDTO> stopCamera(){
+		ErrorDescription error = cameraService.stopStreaming();
+		return new ResponseEntity<BoxResponseDTO>( boxService.generateState(error) , HttpStatus.OK );
 	}
 	
 }

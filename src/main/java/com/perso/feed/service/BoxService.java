@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.perso.feed.config.BoxContext;
-import com.perso.feed.converter.dto.impl.BoxStateDTOConverter;
+import com.perso.feed.converter.dto.impl.BoxResponseDTOConverter;
+import com.perso.feed.model.BoxResponse;
 import com.perso.feed.model.BoxState;
 import com.perso.feed.model.Drawer;
 import com.perso.feed.model.DrawerStateEnum;
-import com.perso.feed.model.dto.BoxStateDTO;
+import com.perso.feed.model.ErrorDescription;
+import com.perso.feed.model.dto.BoxResponseDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,12 +25,12 @@ public class BoxService {
 	private DrawerService drawerService;
 	
 	@Autowired
-	private BoxStateDTOConverter boxStateDtoConverter;
+	private BoxResponseDTOConverter boxResponseDTOConverter;
 	
 	@Autowired
 	private CameraService cameraService;
 	
-	public Drawer openDrawer( int number ) throws InterruptedException {
+	public ErrorDescription openDrawer( int number ) throws InterruptedException {
 		if( number == 1 ) {
 			return drawerService.openingDrawer( boxContext.getDrawer1() );
 		}else {
@@ -38,7 +40,7 @@ public class BoxService {
 		
 	}
 	
-	public Drawer closeDrawer( int number ) throws InterruptedException {
+	public ErrorDescription closeDrawer( int number ) throws InterruptedException {
 		if( number == 1 ) {
 			return drawerService.closingDrawer( boxContext.getDrawer1() );
 		}else {
@@ -48,7 +50,7 @@ public class BoxService {
 			
 	}
 
-	public void stopAll() {
+	public ErrorDescription stopAll() {
 
 		boxContext.getDrawer1().getMotorLess().low();
 		boxContext.getDrawer1().getMotorPlus().low();
@@ -62,6 +64,7 @@ public class BoxService {
 		setDrawStateAfterForceStop( boxContext.getDrawer1() );
 		setDrawStateAfterForceStop( boxContext.getDrawer2() );
 		
+		return null;
 	}
 	
 	private void setDrawStateAfterForceStop( Drawer drawer ) {
@@ -79,13 +82,15 @@ public class BoxService {
 		log.info("L'état du moteur {}  est forcé à {} ", drawer.getName() , drawer.getState() );
 	}
 	
-	public BoxStateDTO generateState() {
+	public BoxResponseDTO generateState( ErrorDescription errorDesc ) {
+		
 		BoxState state = new BoxState();
 		state.setCamera( boxContext.getCamera() );
 		state.setDrawer1( boxContext.getDrawer1() );
 		state.setDrawer2( boxContext.getDrawer2() );
 		state.setLedState( boxContext.getLedPin() );
-		return boxStateDtoConverter.generateDTO( state );
+			
+		return boxResponseDTOConverter.generateDTO( new BoxResponse(state, errorDesc) );
 	}
 	
 }
