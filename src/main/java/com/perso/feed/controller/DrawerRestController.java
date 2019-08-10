@@ -13,7 +13,7 @@ import com.perso.feed.service.BoxService;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/box")
+@RequestMapping("/drawer")
 @Slf4j
 public class DrawerRestController {
 
