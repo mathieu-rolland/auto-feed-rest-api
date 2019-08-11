@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.perso.feed.model.ErrorDescription;
 import com.perso.feed.model.dto.BoxResponseDTO;
-import com.perso.feed.model.dto.BoxStateDTO;
-import com.perso.feed.model.dto.ErrorDescriptionDTO;
 import com.perso.feed.service.BoxService;
 
 @RestController
