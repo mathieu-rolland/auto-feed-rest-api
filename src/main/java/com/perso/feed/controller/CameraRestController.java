@@ -33,4 +33,10 @@ public class CameraRestController {
 		return new ResponseEntity<BoxResponseDTO>( boxService.generateState(error) , HttpStatus.OK );
 	}
 	
+	@RequestMapping("/force/stop")
+	public ResponseEntity<BoxResponseDTO> forceKillCamera(){
+		ErrorDescription error = cameraService.forceToKill();
+		return new ResponseEntity<BoxResponseDTO>( boxService.generateState(error) , HttpStatus.OK );
+	}
+	
 }

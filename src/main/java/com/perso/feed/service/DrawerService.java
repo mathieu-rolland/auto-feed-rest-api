@@ -26,6 +26,7 @@ public class DrawerService {
 			
 			boxContext.getLedPin().high();
 			drawer.getMotorPlus().high();
+			drawer.getMotorLess().low();
 			
 			return null;
 		}else {
@@ -42,6 +43,7 @@ public class DrawerService {
 			
 			boxContext.getLedPin().high();
 			drawer.getMotorLess().high();
+			drawer.getMotorPlus().low();
 			
 			return null;
 		}else {
