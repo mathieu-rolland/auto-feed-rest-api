@@ -1,4 +1,7 @@
 
 auto-feed:
   camera:
-    cmd: /product/auto-feed/mjpg-streamer-experimental/mjpg_streamer -o "output_http.so -w /product/auto-feed/mjpg-streamer-experimental/www -p 8090" -i "input_raspicam.so"
+    cmd: /product/auto-feed/auto-feed/scripts/start_camera.ksh
+    cmd_force: /product/auto-feed/auto-feed/scripts/force_kill_camera.ksh
+  sound:
+    path: /product/auto-feed/auto-feed/config/sounds/apple_sms_crop2.wav
