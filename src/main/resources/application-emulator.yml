@@ -1,0 +1,6 @@
+
+auto-feed:
+  camera:
+    cmd: sleep 100000
+  sound:
+    path: /Users/mathieu/Programmation/Workspace/auto-feed-rest-api/src/main/resources/sounds/apple_sms_crop2.wav

@@ -1,68 +1,66 @@
 package com.perso.feed.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.perso.feed.config.BoxContextSingleton;
+import com.perso.feed.config.BoxContext;
 import com.perso.feed.model.Drawer;
 import com.perso.feed.model.DrawerStateEnum;
+import com.perso.feed.model.ErrorCodeEnum;
+import com.perso.feed.model.ErrorDescription;
 
 @Service
 public class DrawerService {
 
-	public Drawer openDrawer( Drawer drawer ) throws InterruptedException {
+	@Autowired
+	private BoxContext boxContext;
+	
+	@Autowired
+	private ErrorService errorService;
+	
+	public ErrorDescription openingDrawer( Drawer drawer ) throws InterruptedException {
 		
-		BoxContextSingleton boxSingleton = BoxContextSingleton.getInstance();
+		if( !isOpenOrOpenning(drawer) ) { 
 		
-		drawer.setState( DrawerStateEnum.OPENING );
-		
-		boxSingleton.getLedPin().high();
-		drawer.getMotorPlus().high();
-		
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			stopInError(drawer);
-			throw e;
+			drawer.setState( DrawerStateEnum.OPENING );
+			
+			boxContext.getLedPin().high();
+			drawer.getMotorPlus().high();
+			drawer.getMotorLess().low();
+			
+			return null;
+		}else {
+			return errorService.generateReturnDescription( ErrorCodeEnum.ALREADY_OPEN );
 		}
-		
-		boxSingleton.getLedPin().low();
-		drawer.getMotorPlus().low();
-		
-		drawer.setState( DrawerStateEnum.OPEN );
-		
-		return drawer;
 		
 	}
 
-	public Drawer closeDrawer( Drawer drawer ) throws InterruptedException {
+	public ErrorDescription closingDrawer( Drawer drawer ) throws InterruptedException {
 		
-		BoxContextSingleton boxSingleton = BoxContextSingleton.getInstance();
+		if( isOpenOrOpenning( drawer ) ) {
 		
-		drawer.setState( DrawerStateEnum.CLOSING );
-		
-		boxSingleton.getLedPin().high();
-		drawer.getMotorLess().high();
-		
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			stopInError(drawer);
-			throw e;
+			drawer.setState( DrawerStateEnum.CLOSING );
+			
+			boxContext.getLedPin().high();
+			drawer.getMotorLess().high();
+			drawer.getMotorPlus().low();
+			
+			return null;
+		}else {
+			return errorService.generateReturnDescription( ErrorCodeEnum.ALREADY_CLOSED );
 		}
-		
-		boxSingleton.getLedPin().low();
-		drawer.getMotorLess().low();
-		
-		drawer.setState( DrawerStateEnum.CLOSED );
-		
-		return drawer;
 		
 	}
 	
-	private void stopInError( Drawer drawer ) {
-		BoxContextSingleton boxSingleton = BoxContextSingleton.getInstance();
-		boxSingleton.getLedPin().low();
+	public void stopInError( Drawer drawer ) {
+		boxContext.getLedPin().low();
 		drawer.getMotorPlus().low();
+	}
+	
+	public boolean isOpenOrOpenning( Drawer drawer ) {
+		return DrawerStateEnum.OPEN.equals( drawer.getState() ) 
+				|| DrawerStateEnum.OPENING.equals( drawer.getState() );
+				
 	}
 	
 }
