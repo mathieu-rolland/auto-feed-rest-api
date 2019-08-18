@@ -50,4 +50,9 @@ public class PinProviderEmulator implements IPinProvider {
 		return new PinEmulator( "25" );
 	}
 
+	@Override
+	public Pin getPin26() {
+		return new PinEmulator( "26" );
+	}
+
 }

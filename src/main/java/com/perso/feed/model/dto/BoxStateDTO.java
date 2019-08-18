@@ -18,4 +18,6 @@ public class BoxStateDTO {
 	
 	private CameraDTO camera;
 	
+	private FlashDTO flash;
+	
 }

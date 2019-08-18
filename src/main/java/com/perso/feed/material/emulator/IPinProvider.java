@@ -14,5 +14,6 @@ public interface IPinProvider {
 	public Pin getPin23();
 	public Pin getPin24();
 	public Pin getPin25();
+	public Pin getPin26();
 	
 }

@@ -20,4 +20,6 @@ public class BoxState {
 	
 	private Camera camera;
 	
+	private Flash flash;
+	
 }

@@ -11,10 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.perso.feed.model.ErrorDescription;
 import com.perso.feed.model.dto.BoxResponseDTO;
 import com.perso.feed.service.BoxService;
 import com.perso.feed.service.SoundPlayerBean;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/box")
 public class BoxRestController {
@@ -35,5 +39,18 @@ public class BoxRestController {
 		soundPlayerService.playSound();
 	}
 	
+	@RequestMapping("/flash/start")
+	public ResponseEntity<BoxResponseDTO> switchOnLight() {
+		log.info("Turn ON the flash");
+		ErrorDescription result = boxService.turnOnFlash();
+		return new ResponseEntity<BoxResponseDTO>( boxService.generateState( result ) , HttpStatus.OK );
+	}
+	
+	@RequestMapping("/flash/stop")
+	public ResponseEntity<BoxResponseDTO> switchOffLight() {
+		log.info("Turn OFF the flash");
+		ErrorDescription result = boxService.turnOffFlash();
+		return new ResponseEntity<BoxResponseDTO>( boxService.generateState( result ) , HttpStatus.OK );
+	}
 	
 }

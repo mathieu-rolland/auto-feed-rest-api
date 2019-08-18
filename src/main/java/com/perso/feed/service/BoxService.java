@@ -9,8 +9,11 @@ import com.perso.feed.model.BoxResponse;
 import com.perso.feed.model.BoxState;
 import com.perso.feed.model.Drawer;
 import com.perso.feed.model.DrawerStateEnum;
+import com.perso.feed.model.ErrorCodeEnum;
 import com.perso.feed.model.ErrorDescription;
+import com.perso.feed.model.Flash;
 import com.perso.feed.model.dto.BoxResponseDTO;
+import com.pi4j.io.gpio.GpioPinDigitalOutput;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +32,9 @@ public class BoxService {
 	
 	@Autowired
 	private CameraService cameraService;
+	
+	@Autowired
+	private ErrorService errorService;
 	
 	public ErrorDescription openDrawer( int number ) throws InterruptedException {
 		if( number == 1 ) {
@@ -50,6 +56,23 @@ public class BoxService {
 			
 	}
 
+	public ErrorDescription turnOnFlash() {
+		Flash flash = boxContext.getFlash();
+		flash.getFlashPin().setPwm( 1024 );
+		flash.setStarted( true );
+		return errorService.generateReturnDescription( ErrorCodeEnum.NO_ERROR );
+		
+	}
+	
+	public ErrorDescription turnOffFlash() {
+		Flash flash = boxContext.getFlash();
+		flash.getFlashPin().setPwm(0);
+		flash.setStarted( false );
+		return errorService.generateReturnDescription( ErrorCodeEnum.NO_ERROR );
+		
+	}
+	
+	
 	public ErrorDescription stopAll() {
 
 		boxContext.getDrawer1().getMotorLess().low();
@@ -89,7 +112,8 @@ public class BoxService {
 		state.setDrawer1( boxContext.getDrawer1() );
 		state.setDrawer2( boxContext.getDrawer2() );
 		state.setLedState( boxContext.getLedPin() );
-			
+		state.setFlash( boxContext.getFlash() );
+		
 		return boxResponseDTOConverter.generateDTO( new BoxResponse(state, errorDesc) );
 	}
 	

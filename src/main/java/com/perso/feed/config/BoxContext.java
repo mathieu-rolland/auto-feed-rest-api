@@ -6,9 +6,11 @@ import com.perso.feed.model.Camera;
 import com.perso.feed.model.CameraStateEnum;
 import com.perso.feed.model.Drawer;
 import com.perso.feed.model.DrawerStateEnum;
+import com.perso.feed.model.Flash;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.GpioPinPwmOutput;
 import com.pi4j.io.gpio.PinState;
 
 import lombok.Getter;
@@ -25,6 +27,8 @@ public class BoxContext {
 	private GpioPinListenerDigitalEventListener openingListener;
 	
 	private Camera camera;
+	
+	private Flash flash;
 	
 	public void setupGpio( GpioController gpio , IPinProvider pinProvider ) {
 		
@@ -49,11 +53,15 @@ public class BoxContext {
 		closingListener = new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.CLOSING , DrawerStateEnum.CLOSED );
 		openingListener = new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.OPENING , DrawerStateEnum.OPEN );
 		
+		
 		course1MoteurClosed.addListener( closingListener );
 		course1MoteurOpened.addListener( openingListener );
 		
 		camera = new Camera( CameraStateEnum.STOPPED , null );
 		
+		GpioPinPwmOutput flashPin = gpio.provisionPwmOutputPin( pinProvider.getPin23() , "Flash");
+		flash = new Flash( flashPin.getPwm() > 0 , flashPin );
+
 	}
 	
 }
