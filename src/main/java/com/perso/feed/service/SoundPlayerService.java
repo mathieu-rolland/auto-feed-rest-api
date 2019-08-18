@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class SoundPlayerBean {
+public class SoundPlayerService {
 
 	@Value("${auto-feed.sound.path}")
 	private String soundPath;

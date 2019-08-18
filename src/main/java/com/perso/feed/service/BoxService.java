@@ -30,7 +30,7 @@ public class BoxService {
 	@Autowired
 	private CameraService cameraService;
 	
-	public ErrorDescription openDrawer( int number ) throws InterruptedException {
+	public ErrorDescription openDrawer( int number ) {
 		if( number == 1 ) {
 			return drawerService.openingDrawer( boxContext.getDrawer1() );
 		}else {

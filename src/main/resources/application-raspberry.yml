@@ -5,3 +5,6 @@ auto-feed:
     cmd_force: /product/auto-feed/auto-feed/scripts/force_kill_camera.ksh
   sound:
     path: /product/auto-feed/auto-feed/config/sounds/apple_sms_crop2.wav
+  tasks:
+    sound:
+      repeat: 3

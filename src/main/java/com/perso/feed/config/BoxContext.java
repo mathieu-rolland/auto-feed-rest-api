@@ -1,5 +1,7 @@
 package com.perso.feed.config;
 
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+
 import com.perso.feed.material.emulator.IPinProvider;
 import com.perso.feed.material.listener.GpioPinListenerDigitalEventListener;
 import com.perso.feed.model.Camera;
@@ -38,13 +40,13 @@ public class BoxContext {
 		GpioPinDigitalOutput motor1Pin2 = gpio.provisionDigitalOutputPin(pinProvider.getPin24(), "motor1Pin2", PinState.LOW);
 		motor1Pin2.setShutdownOptions(true, PinState.LOW);
 		
-		drawer1 = new Drawer( "Drawer1" , DrawerStateEnum.CLOSED, motor1Pin1, motor1Pin2);
+		GpioPinDigitalInput course1MoteurOpened = gpio.provisionDigitalInputPin( pinProvider.getPin01() , "CfC1MoteurClosed"  );
+		GpioPinDigitalInput course1MoteurClosed = gpio.provisionDigitalInputPin( pinProvider.getPin02() , "CfC1MoteurOpened"  );
+		
+		drawer1 = new Drawer( 1 , "Drawer1" , DrawerStateEnum.CLOSED, motor1Pin1, motor1Pin2 , course1MoteurOpened , course1MoteurClosed);
 		
 		//TODO : implementer la gestion du 2eme moteur.
-		drawer2 = new Drawer( "Drawer2" , DrawerStateEnum.CLOSED , null , null );
-		
-		GpioPinDigitalInput course1MoteurClosed = gpio.provisionDigitalInputPin( pinProvider.getPin01() , "CfC1MoteurClosed"  );
-		GpioPinDigitalInput course1MoteurOpened = gpio.provisionDigitalInputPin( pinProvider.getPin02() , "CfC1MoteurOpened"  );
+		drawer2 = new Drawer( 2 , "Drawer2" , DrawerStateEnum.CLOSED , null , null , null , null);
 		
 		closingListener = new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.CLOSING , DrawerStateEnum.CLOSED );
 		openingListener = new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.OPENING , DrawerStateEnum.OPEN );

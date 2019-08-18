@@ -18,7 +18,7 @@ public class DrawerService {
 	@Autowired
 	private ErrorService errorService;
 	
-	public ErrorDescription openingDrawer( Drawer drawer ) throws InterruptedException {
+	public ErrorDescription openingDrawer( Drawer drawer ) {
 		
 		if( !isOpenOrOpenning(drawer) ) { 
 		
@@ -37,8 +37,9 @@ public class DrawerService {
 
 	public ErrorDescription closingDrawer( Drawer drawer ) throws InterruptedException {
 		
-		if( isOpenOrOpenning( drawer ) ) {
-		
+		if( drawer.isClosed() ) {
+			return errorService.generateReturnDescription( ErrorCodeEnum.ALREADY_CLOSED );
+		}else {
 			drawer.setState( DrawerStateEnum.CLOSING );
 			
 			boxContext.getLedPin().high();
@@ -46,8 +47,6 @@ public class DrawerService {
 			drawer.getMotorPlus().low();
 			
 			return null;
-		}else {
-			return errorService.generateReturnDescription( ErrorCodeEnum.ALREADY_CLOSED );
 		}
 		
 	}
@@ -58,8 +57,7 @@ public class DrawerService {
 	}
 	
 	public boolean isOpenOrOpenning( Drawer drawer ) {
-		return DrawerStateEnum.OPEN.equals( drawer.getState() ) 
-				|| DrawerStateEnum.OPENING.equals( drawer.getState() );
+		return drawer.isOpen();
 				
 	}
 	
