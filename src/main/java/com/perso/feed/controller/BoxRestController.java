@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.perso.feed.model.dto.BoxResponseDTO;
 import com.perso.feed.service.BoxService;
-import com.perso.feed.service.SoundPlayerBean;
+import com.perso.feed.service.SoundPlayerService;
 
 @RestController
 @RequestMapping("/box")
@@ -23,7 +23,7 @@ public class BoxRestController {
 	private BoxService boxService;
 	
 	@Autowired
-	private SoundPlayerBean soundPlayerService;
+	private SoundPlayerService soundPlayerService;
 	
 	@RequestMapping("/state")
 	public ResponseEntity<BoxResponseDTO> getCurrentState(){
