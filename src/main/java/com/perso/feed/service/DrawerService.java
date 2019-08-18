@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import com.perso.feed.config.BoxContext;
 import com.perso.feed.model.Drawer;
 import com.perso.feed.model.DrawerStateEnum;
-import com.perso.feed.model.ErrorCodeEnum;
+import com.perso.feed.model.ReturnCodeEnum;
 import com.perso.feed.model.ErrorDescription;
 
-@Service
+
 public class DrawerService {
 
 	@Autowired
@@ -30,7 +30,7 @@ public class DrawerService {
 			
 			return null;
 		}else {
-			return errorService.generateReturnDescription( ErrorCodeEnum.ALREADY_OPEN );
+			return errorService.generateReturnDescription( ReturnCodeEnum.ALREADY_OPEN );
 		}
 		
 	}
@@ -38,7 +38,7 @@ public class DrawerService {
 	public ErrorDescription closingDrawer( Drawer drawer ) throws InterruptedException {
 		
 		if( drawer.isClosed() ) {
-			return errorService.generateReturnDescription( ErrorCodeEnum.ALREADY_CLOSED );
+			return errorService.generateReturnDescription( ReturnCodeEnum.ALREADY_CLOSED );
 		}else {
 			drawer.setState( DrawerStateEnum.CLOSING );
 			

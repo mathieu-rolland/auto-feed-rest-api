@@ -1,33 +1,24 @@
-package com.perso.feed.service;
+package com.perso.feed.model;
 
 import java.io.File;
 import java.io.IOException;
 
-import javax.annotation.PostConstruct;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import lombok.extern.slf4j.Slf4j;
 
-@Service
 @Slf4j
-public class SoundPlayerService {
+public class SoundPlayer {
 
-	@Value("${auto-feed.sound.path}")
-	private String soundPath;
+	private Clip clip;
 	
 	private boolean isPlaying = false;
 	
-	private Clip clip;
-	
-	@PostConstruct
-	private void setup() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+	public void setup( String soundPath ) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		AudioInputStream stream = AudioSystem.getAudioInputStream( new File(soundPath) );
 		clip = AudioSystem.getClip();
 		clip.open(stream);

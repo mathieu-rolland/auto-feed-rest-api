@@ -1,11 +1,8 @@
 package com.perso.feed.config;
 
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-
 import com.perso.feed.material.emulator.IPinProvider;
 import com.perso.feed.material.listener.GpioPinListenerDigitalEventListener;
 import com.perso.feed.model.Camera;
-import com.perso.feed.model.CameraStateEnum;
 import com.perso.feed.model.Drawer;
 import com.perso.feed.model.DrawerStateEnum;
 import com.pi4j.io.gpio.GpioController;
@@ -48,13 +45,13 @@ public class BoxContext {
 		//TODO : implementer la gestion du 2eme moteur.
 		drawer2 = new Drawer( 2 , "Drawer2" , DrawerStateEnum.CLOSED , null , null , null , null);
 		
-		closingListener = new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.CLOSING , DrawerStateEnum.CLOSED );
-		openingListener = new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.OPENING , DrawerStateEnum.OPEN );
+		//closingListener = new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.CLOSING , DrawerStateEnum.CLOSED );
+		//openingListener = new GpioPinListenerDigitalEventListener( drawer1 , DrawerStateEnum.OPENING , DrawerStateEnum.OPEN );
 		
 		course1MoteurClosed.addListener( closingListener );
 		course1MoteurOpened.addListener( openingListener );
 		
-		camera = new Camera( CameraStateEnum.STOPPED , null );
+		//camera = new Camera( CameraStateEnum.STOPPED , null );
 		
 	}
 	

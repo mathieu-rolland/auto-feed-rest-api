@@ -12,6 +12,6 @@ import lombok.Setter;
 public class BoxResponse {
 
 	private BoxState boxState;
-	private ErrorDescription error;
+	private ReturnCodeEnum error;
 	
 }

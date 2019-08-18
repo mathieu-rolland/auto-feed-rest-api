@@ -30,6 +30,7 @@ public class GpioPinDigitalOutputEmulator implements GpioPinDigitalOutput {
 		this.pin = pin;
 		this.state = defaultState;
 		this.name = name;
+		this.high = false;
 	}
 
 	@Override
@@ -271,14 +272,12 @@ public class GpioPinDigitalOutputEmulator implements GpioPinDigitalOutput {
 
 	@Override
 	public void high() {
-		// TODO Auto-generated method stub
-		
+		this.high = true;
 	}
 
 	@Override
 	public void low() {
-		// TODO Auto-generated method stub
-		
+		this.high = false;
 	}
 
 	@Override

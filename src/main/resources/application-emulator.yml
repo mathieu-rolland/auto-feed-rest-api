@@ -8,3 +8,5 @@ auto-feed:
   tasks:
     sound:
       repeat: 3
+  security:
+    max: 20

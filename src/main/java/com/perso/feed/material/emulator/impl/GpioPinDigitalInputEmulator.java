@@ -29,7 +29,7 @@ public class GpioPinDigitalInputEmulator implements GpioPinDigitalInput{
 		this.state = state;
 		this.pin = pin;
 		this.name = name;
-	
+		this.high = true;
 	}
 	
 	@Override

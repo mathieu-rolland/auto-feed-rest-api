@@ -2,7 +2,7 @@ package com.perso.feed.service;
 
 import org.springframework.stereotype.Service;
 
-import com.perso.feed.model.ErrorCodeEnum;
+import com.perso.feed.model.ReturnCodeEnum;
 import com.perso.feed.model.ErrorDescription;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ public class ErrorService {
 		return new ErrorDescription( error , code );
 	}
 	
-	public ErrorDescription generateReturnDescription( ErrorCodeEnum errorDesc ) {
+	public ErrorDescription generateReturnDescription( ReturnCodeEnum errorDesc ) {
 		if( errorDesc.getErrorCode() != 0 ) {
 			log.error( errorDesc.getMessage() );
 		}

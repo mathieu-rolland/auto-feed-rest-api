@@ -11,8 +11,6 @@ import com.perso.feed.model.Drawer;
 import com.perso.feed.model.dto.BoxStateDTO;
 import com.perso.feed.model.dto.CameraDTO;
 import com.perso.feed.model.dto.DrawerDTO;
-import com.perso.feed.model.dto.GpioPinDigitalOutputDTO;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
 
 @Service
 public class BoxStateDTOConverter implements IDTOConverter<BoxState, BoxStateDTO>{
@@ -23,8 +21,8 @@ public class BoxStateDTOConverter implements IDTOConverter<BoxState, BoxStateDTO
 	@Autowired
 	private IDTOConverter<Drawer, DrawerDTO> drawerDtoConverter;
 	
-	@Autowired
-	private IDTOConverter<GpioPinDigitalOutput, GpioPinDigitalOutputDTO> gpioDtoConverter;
+//	@Autowired
+//	private IDTOConverter<GpioPinDigitalOutput, GpioPinDigitalOutputDTO> gpioDtoConverter;
 	
 	@Override
 	public BoxState generateFromDTO(BoxStateDTO dto) throws MaterialDtoConvertException {
@@ -37,7 +35,7 @@ public class BoxStateDTOConverter implements IDTOConverter<BoxState, BoxStateDTO
 		dto.setCamera( cameroDtoConverter.generateDTO(object.getCamera()) );
 		dto.setDrawer1( drawerDtoConverter.generateDTO(object.getDrawer1()) );
 		dto.setDrawer2( drawerDtoConverter.generateDTO(object.getDrawer2()) );
-		dto.setLed( gpioDtoConverter.generateDTO(object.getLedState()) );
+		//dto.setLed( gpioDtoConverter.generateDTO(object.getLedState()) );
 		return dto;
 	}
 
