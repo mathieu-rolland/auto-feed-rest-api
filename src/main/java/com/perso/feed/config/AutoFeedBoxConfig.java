@@ -21,11 +21,17 @@ import com.perso.feed.tasks.DrawerOpenTask;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Configuration
+@Slf4j
 public class AutoFeedBoxConfig {
 
 	@Value("${auto-feed.tasks.sound.repeat}")
 	private int nbRepeat;
+	
+	@Value("${auto-feed.tasks.drawer1.open.cron}")
+	private String cronExpressionDrawer1;
 	
 	@Bean
 	@Scope( scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON )
@@ -42,11 +48,9 @@ public class AutoFeedBoxConfig {
 	@Autowired
 	public DrawerOpenTask sheduledConfiguration( ThreadPoolTaskScheduler scheduler, BoxService boxService , BoxContext context, SoundPlayerService player , ErrorService errorService ) {
 		DrawerOpenTask drawer1OpenTask = new DrawerOpenTask(boxService  , player , errorService , context.getDrawer1() , nbRepeat );
-		DrawerOpenTask drawer2Opentask = new DrawerOpenTask(boxService  , player , errorService , context.getDrawer2() , nbRepeat);
-		
-		scheduler.schedule(drawer1OpenTask, new CronTrigger("0 * * * * *"));
-		
-		scheduler.schedule(drawer2Opentask, new CronTrigger("30 * * * * *"));
+//		DrawerOpenTask drawer2Opentask = new DrawerOpenTask(boxService  , player , errorService , context.getDrawer2() , nbRepeat);
+		log.info("The drawer1 cron is : '{}'" , cronExpressionDrawer1);
+		scheduler.schedule(drawer1OpenTask, new CronTrigger( cronExpressionDrawer1 ));
 		
 		return drawer1OpenTask;
 	}

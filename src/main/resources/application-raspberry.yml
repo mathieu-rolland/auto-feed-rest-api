@@ -8,3 +8,6 @@ auto-feed:
   tasks:
     sound:
       repeat: 3
+    drawer1:
+      open:
+        cron: 0 30 7 * * *

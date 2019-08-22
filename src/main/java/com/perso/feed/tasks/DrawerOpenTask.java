@@ -53,7 +53,7 @@ public class DrawerOpenTask implements Runnable{
 					//this method is synchronized
 					soundPlayerService.playSound();
 				}
-				Thread.sleep( 1000 * 10 );
+				Thread.sleep( 1000 * 60 * 15 );
 				boxService.closeDrawer( drawer.getNumber() );
 			} catch (LineUnavailableException | IOException | UnsupportedAudioFileException | InterruptedException e) {
 				log.error("Error on playing sound!" , e);
