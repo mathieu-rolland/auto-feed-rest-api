@@ -41,7 +41,7 @@ public class DrawerOpenTask implements BoxTask , BoxObserver{
 	public void run() {
 		try {
 			log.info("Start task for drawer {}" , drawerNumber);
-			new SecurityDrawer( maxTimeBeforeAlert , box.getDrawers().get(drawerNumber) ).open();
+			box.getDrawers().get(drawerNumber).open();
 			box.getOpeningListener().addObserver(this);
 			log.info("End task for drawer {}" , drawerNumber);
 		}catch (Exception e) {

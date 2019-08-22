@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 public class Box implements BoxObserver{
 
-	private HashMap<Integer, Drawer> drawers = new HashMap<Integer, Drawer>();
+	private HashMap<Integer, SecurityDrawer> drawers = new HashMap<Integer, SecurityDrawer>();
 	
 	private Camera camera;
 	
@@ -42,7 +42,7 @@ public class Box implements BoxObserver{
 	GpioPinListenerDigitalEventListener closingListener;
 	GpioPinListenerDigitalEventListener openingListener;
 	
-	public void setupBox( GpioController gpio , IPinProvider pinProvider ) {
+	public void setupBox( GpioController gpio , IPinProvider pinProvider , int waitBeforeAlerte) {
 		//ledPin = gpio.provisionDigitalOutputPin( pinProvider.getPin00() , "MyLED", PinState.HIGH);
 		//ledPin.setShutdownOptions(true, PinState.LOW);
 		
@@ -55,7 +55,7 @@ public class Box implements BoxObserver{
 		GpioPinDigitalInput course1MoteurOpened = gpio.provisionDigitalInputPin( pinProvider.getPin01() , "CfC1MoteurClosed"  );
 		GpioPinDigitalInput course1MoteurClosed = gpio.provisionDigitalInputPin( pinProvider.getPin02() , "CfC1MoteurOpened"  );
 		
-		Drawer drawer = new Drawer( 1 , "Drawer1" , DrawerStateEnum.CLOSED, motor1Pin1, motor1Pin2 , course1MoteurOpened , course1MoteurClosed);
+		SecurityDrawer drawer = new SecurityDrawer( 1 , "Drawer1" , DrawerStateEnum.CLOSED, motor1Pin1, motor1Pin2 , course1MoteurOpened , course1MoteurClosed ,waitBeforeAlerte);
 		drawers.put( drawer.getNumber() , drawer );
 		
 		closingListener = new GpioPinListenerDigitalEventListener( drawer , BoxEvent.DRAWER_CLOSE );
@@ -65,7 +65,7 @@ public class Box implements BoxObserver{
 		course1MoteurOpened.addListener( openingListener );
 	
 		//TODO : implementer la gestion du 2eme moteur.
-		drawer = new Drawer( 2 , "Drawer2" , DrawerStateEnum.CLOSED , null , null , null , null);
+		drawer = new SecurityDrawer( 2 , "Drawer2" , DrawerStateEnum.CLOSED , null , null , null , null,waitBeforeAlerte);
 		drawers.put( drawer.getNumber() , drawer );
 		
 	}
@@ -109,7 +109,7 @@ public class Box implements BoxObserver{
 
 	@Override
 	public void receivedEvent(BoxEvent event, Drawer drawer) {
-		drawer.stop();
+		drawer.stopAll();	
 	}
 
 }

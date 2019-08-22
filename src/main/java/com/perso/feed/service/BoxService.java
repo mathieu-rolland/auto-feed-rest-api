@@ -19,17 +19,17 @@ public class BoxService {
 	private int maxTimeBeforeAlert;
 	
 	public ReturnCodeEnum openDrawer( int number ) {
-		Drawer drawer = box.getDrawers().get(number);
+		SecurityDrawer drawer = box.getDrawers().get(number);
 		if( drawer != null ) {
-			return new SecurityDrawer( maxTimeBeforeAlert , drawer ).open();
+			return drawer.open();
 		}
 		return ReturnCodeEnum.UNKNOWN_DRAWER;
 	}
 	
 	public ReturnCodeEnum closeDrawer( int number ) throws InterruptedException {
-		Drawer drawer = box.getDrawers().get(number);
+		SecurityDrawer drawer = box.getDrawers().get(number);
 		if( drawer != null ) {
-			return new SecurityDrawer( maxTimeBeforeAlert , drawer ).close();
+			return drawer.close();
 		}
 		return ReturnCodeEnum.UNKNOWN_DRAWER;
 			

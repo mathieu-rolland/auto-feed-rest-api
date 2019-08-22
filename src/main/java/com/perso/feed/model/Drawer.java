@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class Drawer {
 
 	private int number;
@@ -31,24 +30,24 @@ public class Drawer {
 	private transient GpioPinDigitalInput closedSensor;
 	
 	public boolean isOpen() {
-		return openedSensor.isLow();
+		return openedSensor.isHigh();
 	}
 	
 	public boolean isClosed() {
-		return closedSensor.isLow();
+		return closedSensor.isHigh();
 	}
 	
 	public String toString() {
 		return "Number : " + number + "Name : " + name + ", state : " + state.getName();
 	}
 
-	public void stop() {
+	public void stopAll() {
 		motorLess.low();
 		motorPlus.low();
 		log.info( "Stop motor of {}" , name );
 	}
 	
-	protected ReturnCodeEnum open() {
+	protected ReturnCodeEnum openDrawer() {
 		
 		if( !isOpen() ) {
 			state = DrawerStateEnum.OPENING;
@@ -61,7 +60,7 @@ public class Drawer {
 		
 	}
 	
-	protected ReturnCodeEnum close() {
+	protected ReturnCodeEnum closeDrawer() {
 		
 		if( !isClosed() ) {
 			state = DrawerStateEnum.CLOSING;

@@ -55,7 +55,7 @@ public class AutoFeedBoxConfig {
 	public Box createBox(GpioController gpio , IPinProvider pinProvider, ThreadPoolTaskScheduler scheduler , ErrorService errorService) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		
 		Box box = new Box();
-		box.setupBox(gpio, pinProvider);
+		box.setupBox(gpio, pinProvider, maxTimeBeforeAlert);
 		box.setupCamera(cmd, forceCameraStop);
 		box.setupSound(soundPath);
 		box.setScheduler(scheduler);
