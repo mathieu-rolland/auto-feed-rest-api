@@ -1,7 +1,5 @@
 package com.perso.feed.config;
 
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-
 import com.perso.feed.material.emulator.IPinProvider;
 import com.perso.feed.material.listener.GpioPinListenerDigitalEventListener;
 import com.perso.feed.model.Camera;
@@ -9,13 +7,17 @@ import com.perso.feed.model.CameraStateEnum;
 import com.perso.feed.model.Drawer;
 import com.perso.feed.model.DrawerStateEnum;
 import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.PinPullResistance;
 import com.pi4j.io.gpio.PinState;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
+@Slf4j
 public class BoxContext {
 
 	private Drawer drawer1;
@@ -40,9 +42,9 @@ public class BoxContext {
 		GpioPinDigitalOutput motor1Pin2 = gpio.provisionDigitalOutputPin(pinProvider.getPin24(), "motor1Pin2", PinState.LOW);
 		motor1Pin2.setShutdownOptions(true, PinState.LOW);
 		
-		GpioPinDigitalInput course1MoteurOpened = gpio.provisionDigitalInputPin( pinProvider.getPin01() , "CfC1MoteurClosed"  );
-		GpioPinDigitalInput course1MoteurClosed = gpio.provisionDigitalInputPin( pinProvider.getPin02() , "CfC1MoteurOpened"  );
-		
+		GpioPinDigitalInput course1MoteurOpened = gpio.provisionDigitalInputPin( pinProvider.getPin01() , "CfC1MoteurOpened" , PinPullResistance.PULL_UP );
+		GpioPinDigitalInput course1MoteurClosed = gpio.provisionDigitalInputPin( pinProvider.getPin02() , "CfC1MoteurClosed" , PinPullResistance.PULL_UP );
+
 		drawer1 = new Drawer( 1 , "Drawer1" , DrawerStateEnum.CLOSED, motor1Pin1, motor1Pin2 , course1MoteurOpened , course1MoteurClosed);
 		
 		//TODO : implementer la gestion du 2eme moteur.
@@ -56,6 +58,12 @@ public class BoxContext {
 		
 		camera = new Camera( CameraStateEnum.STOPPED , null );
 		
+	}
+	
+	public void shutdown() {
+		log.info("Shutdown the box");
+		GpioController gpio = GpioFactory.getInstance();
+		gpio.shutdown();
 	}
 	
 }

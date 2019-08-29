@@ -33,7 +33,7 @@ public class AutoFeedBoxConfig {
 	@Value("${auto-feed.tasks.drawer1.open.cron}")
 	private String cronExpressionDrawer1;
 	
-	@Bean
+	@Bean( destroyMethod = "shutdown" )
 	@Scope( scopeName = ConfigurableBeanFactory.SCOPE_SINGLETON )
 	@Autowired
 	public BoxContext createContext(	GpioController gpio , 
