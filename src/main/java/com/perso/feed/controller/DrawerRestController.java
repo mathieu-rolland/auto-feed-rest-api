@@ -23,14 +23,14 @@ public class DrawerRestController {
 	
 	@RequestMapping("/{number}/open")
 	public ResponseEntity<BoxResponseDTO> openDoor( @PathVariable("number") int number ) throws InterruptedException {
-		log.info( "Open the door" );
+		log.info( "Open the door {}" , number );
 		ErrorDescription error = boxService.openDrawer(number);
 		return new ResponseEntity<BoxResponseDTO>( boxService.generateState( error ) , HttpStatus.OK );
 	}
 
 	@RequestMapping("/{number}/close")
 	public ResponseEntity<BoxResponseDTO> closeDoor(@PathVariable("number") int number) throws InterruptedException {
-		log.info( "Close the door" );
+		log.info( "Close the door {}" , number );
 		ErrorDescription error = boxService.closeDrawer(number);
 		return new ResponseEntity<BoxResponseDTO>( boxService.generateState( error ) , HttpStatus.OK );
 	}

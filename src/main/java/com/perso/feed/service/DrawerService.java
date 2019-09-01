@@ -9,6 +9,9 @@ import com.perso.feed.model.DrawerStateEnum;
 import com.perso.feed.model.ErrorCodeEnum;
 import com.perso.feed.model.ErrorDescription;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class DrawerService {
 
@@ -30,6 +33,7 @@ public class DrawerService {
 			
 			return null;
 		}else {
+			log.warn( "The drawer {} is already openned." , drawer.getName() );
 			return errorService.generateReturnDescription( ErrorCodeEnum.ALREADY_OPEN );
 		}
 		
@@ -38,6 +42,7 @@ public class DrawerService {
 	public ErrorDescription closingDrawer( Drawer drawer ) throws InterruptedException {
 		
 		if( drawer.isClosed() ) {
+			log.warn( "The drawer {} is already closed." , drawer.getName() );
 			return errorService.generateReturnDescription( ErrorCodeEnum.ALREADY_CLOSED );
 		}else {
 			drawer.setState( DrawerStateEnum.CLOSING );
@@ -54,6 +59,7 @@ public class DrawerService {
 	public void stopInError( Drawer drawer ) {
 		boxContext.getLedPin().low();
 		drawer.getMotorPlus().low();
+		log.error( "The drawer {} stpped in error." , drawer.getName() );
 	}
 	
 	public boolean isOpenOrOpenning( Drawer drawer ) {

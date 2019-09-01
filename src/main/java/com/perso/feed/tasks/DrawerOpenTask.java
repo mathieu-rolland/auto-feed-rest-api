@@ -5,8 +5,6 @@ import java.io.IOException;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-
 import com.perso.feed.model.Drawer;
 import com.perso.feed.service.BoxService;
 import com.perso.feed.service.ErrorService;
@@ -22,8 +20,6 @@ public class DrawerOpenTask implements Runnable{
 	private SoundPlayerService soundPlayerService;
 	
 	private ErrorService errorService;
-	
-	private ThreadPoolTaskScheduler scheduler;
 	
 	private int nbRepeat;
 	
@@ -45,7 +41,7 @@ public class DrawerOpenTask implements Runnable{
 	@Override
 	public void run() {
 		try {
-			log.info("Start task for drawer {}" , drawer.getNumber());
+			log.info("Automatically start task for drawer {}" , drawer.getNumber());
 			boxService.openDrawer( drawer.getNumber() );
 			try {
 				for( int i = 0 ; i < nbRepeat ; i++ ) {
@@ -59,7 +55,7 @@ public class DrawerOpenTask implements Runnable{
 				log.error("Error on playing sound!" , e);
 				throw e;
 			}
-			log.info("End task for drawer {}" , drawer.getNumber());
+			log.info("Automatic task for drawer {} done successfully" , drawer.getNumber());
 		}catch (Exception e) {
 			errorService.sendMail( e );
 		}

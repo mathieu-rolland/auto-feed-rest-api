@@ -23,7 +23,7 @@ public class ErrorService {
 	}
 
 	public void sendMail(Exception e) {
-		log.info("Send mail on error occured." , e);
+		log.error("Send mail on error occured." , e);
 	} 
 	
 }
