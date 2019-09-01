@@ -298,8 +298,9 @@ public class GpioControllerEmulator implements GpioController {
 
 	@Override
 	public GpioPinDigitalInput provisionDigitalInputPin(Pin pin, String name, PinPullResistance resistance) {
-		// TODO Auto-generated method stub
-		return null;
+		GpioPinDigitalInputEmulator digitalPin = new GpioPinDigitalInputEmulator( pin, PinState.LOW , name );
+		this.pins.put( name , digitalPin);
+		return digitalPin;
 	}
 
 	@Override

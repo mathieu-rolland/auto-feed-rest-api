@@ -22,16 +22,15 @@ public class GpioPinListenerDigitalEventListener implements GpioPinListenerDigit
 	@Override
 	public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
 		
-		log.info("Event received for drawer {} for event listener {}. Pin now in state {}" 
-				, drawer.getName(), eventToListen.getName() , event.getState().getName() );
+		log.debug("Event received for drawer {} for event listener {}. Pin now in state {}", drawer.getName(), eventToListen.getName() , event.getState().getName() );
 		if( event.getState().isLow() ) {
-			log.info("Event tak into account for drawer {} with state {}", drawer.getName() , drawer.getState() );
+			log.debug("Event taking into account for drawer {} with state {}", drawer.getName() , drawer.getState() );
 			drawer.getMotorLess().low();
 			drawer.getMotorPlus().low();
 			drawer.setState( finalState );
 			log.info("Drawer done {} with state {}", drawer.getName() , drawer.getState() );
 		}else {
-			log.info("Event for {} is ignore" , eventToListen.getName());
+			log.debug("Event for {} is ignore" , eventToListen.getName());
 		}
 		
 	}

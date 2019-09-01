@@ -31,14 +31,14 @@ public class Drawer {
 	private transient GpioPinDigitalInput closedSensor;
 	
 	public boolean isOpen() {
-		log.info( "{} : {}" , openedSensor.getName() , openedSensor.getState() );
-		log.info( "{} : {}" , closedSensor.getName() , closedSensor.getState() );
+		log.debug( "{} : {}" , openedSensor.getName() , openedSensor.getState() );
+		log.debug( "{} : {}" , closedSensor.getName() , closedSensor.getState() );
 		return openedSensor.isLow();
 	}
 	
 	public boolean isClosed() {
-		log.info( "{} : {}" , openedSensor.getName() , openedSensor.getState() );
-		log.info( "{} : {}" , closedSensor.getName() , closedSensor.getState() );
+		log.debug( "{} : {}" , openedSensor.getName() , openedSensor.getState() );
+		log.debug( "{} : {}" , closedSensor.getName() , closedSensor.getState() );
 		return closedSensor.isLow();
 	}
 	
